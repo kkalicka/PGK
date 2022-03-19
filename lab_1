@@ -1,0 +1,117 @@
+#include <SFML/Graphics.hpp>
+#include <math.h>
+#include "font.h"
+
+int main()
+{
+
+    sf::RenderWindow window(sf::VideoMode(800, 600), "1 laboratoria z Podstaw Grafiki koputerowej"); //1 szerokość, 2 wysokość
+    window.clear();
+    //ilość uruchomień programu na sekundę
+    window.setFramerateLimit(60);  
+    sf::Font font;
+    sf::Text text("Hello World!", font, 50);
+    window.draw(text);
+    int d_a =0; // c=1; l=2;
+    int size_ch = 1;
+    int b = 0;
+    window.clear();
+    while (window.isOpen())
+    {
+
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.key.code == sf::Keyboard::D)
+            {
+                size_ch += 1;
+            }
+            if (event.key.code == sf::Keyboard::O)
+            {
+                size_ch -= 1;
+            }
+            sf::VertexArray triangle(sf::Triangles, 3);
+
+            // define the position of the triangle's points
+            triangle[0].position = sf::Vector2f(780.f, 20.f);
+            triangle[1].position = sf::Vector2f(600.f, 20.f);
+            triangle[2].position = sf::Vector2f(600.f, 200.f);
+            
+            // define the color of the triangle's points
+            triangle[0].color = sf::Color::Red;
+            triangle[1].color = sf::Color::Blue;
+            triangle[2].color = sf::Color::Green;
+            window.draw(triangle);     
+
+            if (event.key.code == sf::Keyboard::A) // rysowanie wypełnionego okręgu
+            {
+                //d_a = 1;
+            }
+            if (event.key.code == sf::Keyboard::L) //rysowanie lini
+            {
+                d_a = 2;
+                b = 0;
+            }
+            if (event.key.code == sf::Keyboard::R) //rysowanie prostokąta
+            {
+               d_a = 3;
+               b = 0;
+            }
+            if (event.key.code == sf::Keyboard::C)
+            {       
+                d_a = 1;
+                
+            }
+
+            if (event.mouseButton.button == sf::Mouse::Left)
+            {
+                if (d_a == 1 ) //c -> circle
+                {
+                    //while(event.mouseButton.button != sf::Mouse::Left)
+                    sf::CircleShape shape(size_ch+20.f);
+                    shape.setOutlineThickness(2.f);
+                    shape.setOutlineColor(sf::Color::Red);
+                    shape.setFillColor(sf::Color::Black);
+                    shape.setPosition(event.mouseButton.x, event.mouseButton.y);
+                    window.draw(shape); 
+                }
+                if (d_a == 2) //l -> line
+                {
+                    sf::RectangleShape line(sf::Vector2f(150.f, 5.f));
+                    line.rotate((size_ch/2)*45.f);
+                    line.setPosition(event.mouseButton.x, event.mouseButton.y);
+                    window.draw(line); 
+                }
+                if (d_a == 3) //r -> rectangle without filling, to have with filling press "F"
+                {
+                    sf::RectangleShape rectangle(sf::Vector2f(20.f, 150.f));
+                    rectangle.setOutlineThickness(2.f);
+                    rectangle.setOutlineColor(sf::Color::Red);
+                    rectangle.setFillColor(sf::Color::Black);                    
+                    rectangle.setPosition(event.mouseButton.x, event.mouseButton.y);
+                    rectangle.setSize(sf::Vector2f(static_cast<float> (sf::Mouse::getPosition(window).x), static_cast<float> (sf::Mouse::getPosition(window).y)));
+                    rectangle.setSize(sf::Vector2f((size_ch*10)+100.f, (size_ch*10)+ 50.f));
+                    window.draw(rectangle);
+                }
+                if (d_a != 1 && d_a != 2 && d_a != 3)
+                {
+                    sf::RectangleShape rectangle(sf::Vector2f(20.f, 150.f));
+                    rectangle.setOutlineThickness(2.f);
+                    rectangle.setFillColor(sf::Color::Red);                    
+                    rectangle.setPosition(event.mouseButton.x, event.mouseButton.y);
+                    rectangle.setSize(sf::Vector2f(static_cast<float> (sf::Mouse::getPosition(window).x), static_cast<float> (sf::Mouse::getPosition(window).y)));
+                    rectangle.setSize(sf::Vector2f((size_ch*10)+100.f, (size_ch*10)+ 50.f));
+                    window.draw(rectangle);                    
+                }
+            }
+            if (event.type == sf::Event::Closed || event.key.code == sf::Keyboard::Escape)
+                window.close();
+            
+            
+        }
+        window.display();
+
+    }
+
+    return 0;
+}
