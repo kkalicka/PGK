@@ -3,7 +3,6 @@
 
 int main()
 {
-
     sf::RenderWindow window(sf::VideoMode(800, 600), "1 laboratoria z Podstaw Grafiki koputerowej"); //1 szerokość, 2 wysokość
     window.clear();
     //ilość uruchomień programu na sekundę
